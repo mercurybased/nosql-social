@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
 const Reactions = require("./Reactions");
 
 const thoughtSchema = new Schema (
@@ -28,20 +28,10 @@ const thoughtSchema = new Schema (
 )
 
 
+thoughtSchema.virtual("reactionCount").get(function () {
+    return this.reactions.length;
+  });
 
-module.exports = thoughtSchema;
-// * `createdAt`
-// * Date
-// * Set default value to the current timestamp
-// * Use a getter method to format the timestamp on query
+const Thoughts = model('thoughts', thoughtSchema)
 
-// * `username` (The user that created this thought)
-// * String
-// * Required
-
-// * `reactions` (These are like replies)
-// * Array of nested documents created with the `reactionSchema`
-
-// **Schema Settings**:
-
-// Create a virtual called `reactionCount` that retrieves the length of the thought's `reactions` array field on query.
+module.exports = Thoughts
